@@ -21,8 +21,10 @@
 	"homepage": "https://github.com/DentedCode/eapi#readme",
 	"dependencies": {
 		"cors": "^2.8.5",
+		"dotenv": "^8.2.0",
 		"express": "^4.17.1",
 		"joi": "^17.4.0",
+		"mongoose": "^5.12.3",
 		"morgan": "^1.10.0"
 	}
 }

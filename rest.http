@@ -7,6 +7,6 @@ POST  http://localhost:8000/api/v1/login
 Content-Type: application/json
 
 {
-  "email": "test@emai.com",
-  "password": "123456"
+  "email": "test@emai.comd",
+  "password": "12346"
 }

@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 const app = express();
 
@@ -13,6 +16,9 @@ app.use(morgan("tiny"));
 app.use(express.urlencoded({ extended: false }));
 // parse application/json
 app.use(express.json());
+
+import mongoClient from "./config/db.js";
+mongoClient();
 
 // LOAD ROUTERS
 import loginRouter from "./routers/login.router.js";
