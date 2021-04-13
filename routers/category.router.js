@@ -5,6 +5,7 @@ import slugify from "slugify";
 import {
 	getCategories,
 	insertCategory,
+	deleteCategories,
 } from "../models/category/Category.model.js";
 
 router.all("*", (req, res, next) => {
@@ -43,6 +44,32 @@ router.post("/", async (req, res) => {
 		});
 	} catch (error) {
 		console.log(error);
+		throw new Error(error.message);
+	}
+});
+
+router.delete("/", async (req, res) => {
+	const { name, parentCat } = req.body;
+
+	const catIds = req.body;
+	try {
+		const result = await deleteCategories(catIds);
+		console.log(result);
+
+		if (result.deletedCount) {
+			return res.json({
+				status: "success",
+				message: "Category and it's child categories has been deleted.",
+				result,
+			});
+		}
+
+		return res.json({
+			status: "error",
+			message: "Unable to delete the category",
+			result,
+		});
+	} catch (error) {
 		throw new Error(error.message);
 	}
 });

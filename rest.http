@@ -24,3 +24,8 @@ POST  http://localhost:8000/api/v1/category
 Content-Type: application/json
 
 {"name": "Root Category", "parentCat": 0}
+
+### Delete Categories
+Delete  http://localhost:8000/api/v1/category
+ 
+ 

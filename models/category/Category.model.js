@@ -23,3 +23,19 @@ export const getCategories = catObj => {
 		}
 	});
 };
+
+export const deleteCategories = catArg => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			const result = await CategorySchema.deleteMany({
+				_id: {
+					$in: catArg,
+				},
+			});
+
+			resolve(result);
+		} catch (error) {
+			reject(error);
+		}
+	});
+};
