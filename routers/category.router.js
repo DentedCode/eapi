@@ -1,5 +1,6 @@
 import express from "express";
 const router = express.Router();
+import slugify from "slugify";
 
 import {
 	getCategories,
@@ -26,8 +27,15 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
 	console.log(req.body);
+	const { name, parentCat } = req.body;
 	try {
-		const result = await insertCategory(req.body);
+		const newCat = {
+			name,
+			slug: slugify(name, { lower: true }),
+			parentCat,
+		};
+
+		const result = await insertCategory(newCat);
 		res.json({
 			status: "success",
 			message: "New Category saved",

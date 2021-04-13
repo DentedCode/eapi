@@ -7,20 +7,14 @@ const CategorySchema = mongoose.Schema(
 			require: true,
 			default: "",
 		},
-		parentCat: {
+		slug: {
 			type: String,
 			require: true,
 			default: "",
 		},
-		// childCats: [
-		// 	{
-		// 		name: {
-		// 			type: String,
-		// 			require: true,
-		// 			default: "",
-		// 		},
-		// 	},
-		// ],
+		parentCat: {
+			type: mongoose.Schema.ObjectId,
+		},
 	},
 	{
 		timestamp: true,
