@@ -29,3 +29,10 @@ Content-Type: application/json
 Delete  http://localhost:8000/api/v1/category
  
  
+### Products APIs
+### Add new product
+POST  http://localhost:8000/api/v1/product
+Content-Type: application/json
+
+{"name": "Root Category", 
+"price": 0}
