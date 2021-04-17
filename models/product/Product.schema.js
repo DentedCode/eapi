@@ -2,6 +2,11 @@ import mongoose from "mongoose";
 
 const ProductSchema = mongoose.Schema(
 	{
+		status: {
+			type: Boolean,
+			require: true,
+			default: true,
+		},
 		name: {
 			type: String,
 			require: true,

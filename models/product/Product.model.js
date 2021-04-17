@@ -12,30 +12,26 @@ export const insertProduct = prodObj => {
 	});
 };
 
-// export const getCategories = catObj => {
-// 	return new Promise(async (resolve, reject) => {
-// 		try {
-// 			const result = await CategorySchema.find();
+export const getProducts = () => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			const result = await ProdSchema.find();
 
-// 			resolve(result);
-// 		} catch (error) {
-// 			reject(error);
-// 		}
-// 	});
-// };
+			resolve(result);
+		} catch (error) {
+			reject(error);
+		}
+	});
+};
 
-// export const deleteCategories = catArg => {
-// 	return new Promise(async (resolve, reject) => {
-// 		try {
-// 			const result = await CategorySchema.deleteMany({
-// 				_id: {
-// 					$in: catArg,
-// 				},
-// 			});
+export const deleteProduct = _id => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			const result = await ProdSchema.findByIdAndDelete(_id);
 
-// 			resolve(result);
-// 		} catch (error) {
-// 			reject(error);
-// 		}
-// 	});
-// };
+			resolve(result);
+		} catch (error) {
+			reject(error);
+		}
+	});
+};
