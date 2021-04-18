@@ -36,7 +36,12 @@ router.get("/:_id?", async (req, res) => {
 
 router.post("/", newProductValidation, async (req, res) => {
 	try {
-		const result = await insertProduct(req.body);
+		const addNewProd = {
+			...req.body,
+			slug: slugify(req.body.name),
+		};
+
+		const result = await insertProduct(addNewProd);
 		console.log(result);
 
 		if (result._id) {
