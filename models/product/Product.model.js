@@ -24,6 +24,18 @@ export const getProducts = () => {
 	});
 };
 
+export const getProductById = _id => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			const result = await ProdSchema.findById(_id);
+
+			resolve(result);
+		} catch (error) {
+			reject(error);
+		}
+	});
+};
+
 export const deleteProduct = _id => {
 	return new Promise(async (resolve, reject) => {
 		try {

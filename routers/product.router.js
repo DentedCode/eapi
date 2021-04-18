@@ -8,15 +8,17 @@ import {
 	insertProduct,
 	getProducts,
 	deleteProduct,
+	getProductById,
 } from "../models/product/Product.model.js";
 
 router.all("*", (req, res, next) => {
 	next();
 });
 
-router.get("/", async (req, res) => {
+router.get("/:_id?", async (req, res) => {
+	const { _id } = req.params;
 	try {
-		const result = await getProducts();
+		const result = _id ? await getProductById(_id) : await getProducts();
 
 		res.json({
 			status: "success",
@@ -28,9 +30,24 @@ router.get("/", async (req, res) => {
 	}
 });
 
-router.post("/", newProductValidation, async (req, res) => {
-	console.log(req.body);
+// router.put("/", async (req, res) => {
+// 	const _id = req.body;
 
+// 	console.log(req.body);
+// 	try {
+// 		const result = await getProductById(_id);
+
+// 		res.json({
+// 			status: "success",
+// 			message: "Here are all the products",
+// 			result,
+// 		});
+// 	} catch (error) {
+// 		throw error;
+// 	}
+// });
+
+router.post("/", newProductValidation, async (req, res) => {
 	try {
 		const result = await insertProduct(req.body);
 		console.log(result);

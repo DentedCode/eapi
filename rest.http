@@ -17,6 +17,7 @@ Content-Type: application/json
 ### Categor Zone ####
 ### Fetch all category
 GET  http://localhost:8000/api/v1/category
+ 
 
 
 ### Add a category
@@ -36,3 +37,11 @@ Content-Type: application/json
 
 {"name": "Root Category", 
 "price": 0}
+
+
+### fetch all products
+GET   http://localhost:8000/api/v1/product
+
+### fetch single product
+GET   http://localhost:8000/api/v1/product/607a850e263dc01ac00d540c
+
