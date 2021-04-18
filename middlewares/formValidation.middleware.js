@@ -7,6 +7,7 @@ const password = Joi.string().required();
 const date = Joi.date();
 const num = Joi.number();
 const args = Joi.array();
+const boolean = Joi.boolean();
 
 export const loginValidation = (req, res, next) => {
 	const schema = Joi.object({ email, password });
@@ -30,7 +31,35 @@ export const newProductValidation = (req, res, next) => {
 	const schema = Joi.object({
 		name: shortStr.required(),
 		qty: num.required(),
-		isAvailable: shortStr,
+		price: num.required(),
+		salePrice: num,
+		saleEndDate: date,
+		description: longStr.required(),
+		images: args,
+		categories: args,
+	});
+
+	//validation
+	const value = schema.validate(req.body);
+
+	if (value.error) {
+		return res.json({
+			status: "error",
+			message: value.error.message,
+		});
+	}
+
+	next();
+};
+
+export const updateProductValidation = (req, res, next) => {
+	const schema = Joi.object({
+		_id: shortStr.required(),
+		status: boolean.required(),
+		name: shortStr.required(),
+		slug: shortStr.required(),
+		qty: num.required(),
+
 		price: num.required(),
 		salePrice: num,
 		saleEndDate: date,

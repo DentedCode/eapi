@@ -2,13 +2,17 @@ import express from "express";
 const router = express.Router();
 import slugify from "slugify";
 
-import { newProductValidation } from "../middlewares/formValidation.middleware.js";
+import {
+	newProductValidation,
+	updateProductValidation,
+} from "../middlewares/formValidation.middleware.js";
 
 import {
 	insertProduct,
 	getProducts,
 	deleteProduct,
 	getProductById,
+	updateProductById,
 } from "../models/product/Product.model.js";
 
 router.all("*", (req, res, next) => {
@@ -30,23 +34,6 @@ router.get("/:_id?", async (req, res) => {
 	}
 });
 
-// router.put("/", async (req, res) => {
-// 	const _id = req.body;
-
-// 	console.log(req.body);
-// 	try {
-// 		const result = await getProductById(_id);
-
-// 		res.json({
-// 			status: "success",
-// 			message: "Here are all the products",
-// 			result,
-// 		});
-// 	} catch (error) {
-// 		throw error;
-// 	}
-// });
-
 router.post("/", newProductValidation, async (req, res) => {
 	try {
 		const result = await insertProduct(req.body);
@@ -63,6 +50,29 @@ router.post("/", newProductValidation, async (req, res) => {
 		res.json({
 			status: "error",
 			message: "Unable to add the product, Please try again later",
+		});
+	} catch (error) {
+		throw error;
+	}
+});
+
+router.put("/", updateProductValidation, async (req, res) => {
+	const { _id, ...formDt } = req.body;
+	try {
+		const result = await updateProductById({ _id, formDt });
+
+		if (result?._id) {
+			return res.json({
+				status: "success",
+				message: "The product has been updated",
+				result,
+			});
+		}
+
+		res.json({
+			status: "error",
+			message: "Unable to update the product, Please try again later",
+			result,
 		});
 	} catch (error) {
 		throw error;
