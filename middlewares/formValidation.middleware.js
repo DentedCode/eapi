@@ -4,7 +4,7 @@ const shortStr = Joi.string().max(100);
 const longStr = Joi.string().max(2000);
 const email = Joi.string().min(3).max(50).required();
 const password = Joi.string().required();
-const date = Joi.date().allow(null);
+const date = Joi.date().allow(null).allow("");
 const num = Joi.number();
 const args = Joi.array();
 const boolean = Joi.boolean();
@@ -26,7 +26,11 @@ export const loginValidation = (req, res, next) => {
 };
 
 export const newProductValidation = (req, res, next) => {
-	console.log(req.body, "from");
+	const categories = req.body.categories.length
+		? req.body.categories.split(",")
+		: [];
+
+	req.body.categories = categories;
 
 	const schema = Joi.object({
 		name: shortStr.required(),

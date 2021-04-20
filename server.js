@@ -3,6 +3,7 @@ dotenv.config();
 
 import express from "express";
 const app = express();
+import path from "path";
 
 import cors from "cors";
 import morgan from "morgan";
@@ -11,6 +12,9 @@ const PORT = process.env.PORT || 8000;
 
 app.use(cors());
 app.use(morgan("tiny"));
+
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, "public")));
 
 // parse application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: false }));
