@@ -6,7 +6,13 @@ import {
 	getCategories,
 	insertCategory,
 	deleteCategories,
+	updateCategory,
 } from "../models/category/Category.model.js";
+
+import {
+	addCategoryValidation,
+	updateCategoryValidation,
+} from "../middlewares/formValidation.middleware.js";
 
 router.all("*", (req, res, next) => {
 	next();
@@ -26,7 +32,7 @@ router.get("/", async (req, res) => {
 	}
 });
 
-router.post("/", async (req, res) => {
+router.post("/", addCategoryValidation, async (req, res) => {
 	console.log(req.body);
 	const { name, parentCat } = req.body;
 	try {
@@ -41,6 +47,28 @@ router.post("/", async (req, res) => {
 			status: "success",
 			message: "New Category saved",
 			result,
+		});
+	} catch (error) {
+		console.log(error);
+		throw new Error(error.message);
+	}
+});
+
+router.put("/", updateCategoryValidation, async (req, res) => {
+	console.log(req.body);
+	// const { _id, ...updateCategory } = req.body;
+	try {
+		const result = await updateCategory(req.body);
+		if (result._id) {
+			return res.json({
+				status: "success",
+				message: "Category has been updated!",
+				result,
+			});
+		}
+		res.json({
+			status: "error",
+			message: "Error! Unable to update the category, Please try again later",
 		});
 	} catch (error) {
 		console.log(error);

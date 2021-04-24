@@ -19,12 +19,21 @@ Content-Type: application/json
 GET  http://localhost:8000/api/v1/category
  
 
-
 ### Add a category
 POST  http://localhost:8000/api/v1/category
 Content-Type: application/json
 
-{"name": "Root Category", "parentCat": 0}
+{
+  "name": "Root Category", "parentCat": null}
+
+
+### Add a category
+PUT   http://localhost:8000/api/v1/category
+Content-Type: application/json
+
+{
+  "_id": "607c198c9dfa507e340456fe",
+  "name": "Root Category"}
 
 ### Delete Categories
 Delete  http://localhost:8000/api/v1/category

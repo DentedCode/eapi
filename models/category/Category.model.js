@@ -24,6 +24,24 @@ export const getCategories = catObj => {
 	});
 };
 
+export const updateCategory = ({ _id, ...catData }) => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			const result = await CategorySchema.findByIdAndUpdate(
+				{ _id },
+				{ $set: catData },
+				{
+					new: true,
+				}
+			);
+
+			resolve(result);
+		} catch (error) {
+			reject(error);
+		}
+	});
+};
+
 export const deleteCategories = catArg => {
 	return new Promise(async (resolve, reject) => {
 		try {

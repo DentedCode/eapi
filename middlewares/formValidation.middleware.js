@@ -95,3 +95,44 @@ export const updateProductValidation = (req, res, next) => {
 
 	next();
 };
+
+export const addCategoryValidation = (req, res, next) => {
+	const schema = Joi.object({
+		name: shortStr.required(),
+		parentCat: shortStr.allow(null).allow("").optional(),
+	});
+
+	//validation
+	const value = schema.validate(req.body);
+
+	if (value.error) {
+		return res.json({
+			status: "error",
+			message: value.error.message,
+		});
+	}
+
+	next();
+};
+
+export const updateCategoryValidation = (req, res, next) => {
+	console.log(req.body);
+
+	const schema = Joi.object({
+		_id: shortStr.required(),
+		name: shortStr.required(),
+		parentCat: shortStr.allow(null).allow(""),
+	});
+
+	//validation
+	const value = schema.validate(req.body);
+
+	if (value.error) {
+		return res.json({
+			status: "error",
+			message: value.error.message,
+		});
+	}
+
+	next();
+};
