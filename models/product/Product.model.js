@@ -48,13 +48,13 @@ export const deleteProduct = _id => {
 	});
 };
 
-export const updateProductById = ({ _id, formDt }) => {
+export const updateProductById = ({ _id, updateProduct }) => {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const result = await ProdSchema.findByIdAndUpdate(
 				{ _id },
 				{
-					$set: formDt,
+					$set: updateProduct,
 				},
 				{ new: true }
 			);
