@@ -7,8 +7,26 @@ POST  http://localhost:8000/api/v1/login
 Content-Type: application/json
 
 {
-  "email": "test@emai.comd",
-  "password": "12346"
+  "email": "b@c.com",
+  "password": "123456"
+}
+
+###user routers
+### get user by id
+GET  http://localhost:8000/api/v1/user
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJAYy5jb20iLCJpYXQiOjE2MTkzMzAzNTAsImV4cCI6MTYxOTMzMTI1MH0.yB7zipE6-kA26XGWl5NS9cY7nsir0PaH-LqbXfBHuSM
+
+
+### Create a user
+POST http://localhost:8000/api/v1/user
+Content-Type: application/json
+
+{
+  "fName": "sfjsd",
+  "lName": "sfdkl",
+  "email": "b@c.com",
+  "password": "123456",
+  "role": "user"
 }
 
 
