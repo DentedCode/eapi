@@ -51,12 +51,21 @@ export const verifyAccessJwt = accessJWT => {
 	}
 };
 
+// export const verifyRefreshJwt = refreshJWT => {
+// 	jwt.verify(
+// 		refreshJWT,
+// 		process.env.JWT_REFRESH_SECRET,
+// 		function (err, decoded) {
+// 			return err ? Promise.reject(false) : Promise.resolve(decoded);
+// 		}
+// 	);
+// };
 export const verifyRefreshJwt = refreshJWT => {
 	try {
 		const decoded = jwt.verify(refreshJWT, process.env.JWT_REFRESH_SECRET);
 
 		return Promise.resolve(decoded);
 	} catch (error) {
-		return Promise.reject(error);
+		return Promise.reject(false);
 	}
 };

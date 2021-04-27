@@ -29,11 +29,13 @@ import loginRouter from "./routers/login.router.js";
 import userRouter from "./routers/user.router.js";
 import categoryRouter from "./routers/category.router.js";
 import productRouter from "./routers/product.router.js";
+import tokenRouter from "./routers/token.router.js";
 //USE APIS
 app.use("/api/v1/login", loginRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/product", productRouter);
+app.use("/api/v1/token", tokenRouter);
 
 app.get("/", (req, res) => {
 	res.send("Hello World");
