@@ -14,7 +14,6 @@ export const createUser = userObj => {
 };
 
 export const getUserByEmail = email => {
-	console.log(email);
 	return new Promise((resolve, reject) => {
 		try {
 			UsersSchema.findOne({ email })
@@ -53,6 +52,24 @@ export const storeRefreshJWT = (_id, token) => {
 			reject(error);
 		}
 	});
+};
+
+export const deleteRefreshJwtByUserId = _id => {
+	try {
+		UsersSchema.findOneAndUpdate(
+			{ _id },
+			{
+				$set: { "refreshJWT.token": "", "refreshJWT.addedAt": Date.now() },
+			},
+			{ new: true }
+		)
+			.then(data => {})
+			.catch(error => {
+				console.log(error);
+			});
+	} catch (error) {
+		console.log(error);
+	}
 };
 
 export const getUserByEmailAndRefreshJWT = ({ email, refreshJWT }) => {

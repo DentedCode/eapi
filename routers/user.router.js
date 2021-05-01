@@ -5,7 +5,12 @@ import { hashPassword } from "../helpers/bcrypt.helper.js";
 import { verifyAccessJwt } from "../helpers/jwt.helper.js";
 import { userAuthorization } from "../middlewares/authorization.middleware.js";
 import { newUserValidation } from "../middlewares/formValidation.middleware.js";
-import { createUser, getUserById } from "../models/user/User.model.js";
+import {
+	createUser,
+	getUserById,
+	deleteRefreshJwtByUserId,
+} from "../models/user/User.model.js";
+import { deleteAccessJwtByUserId } from "../models/session/Session.model.js";
 
 router.all("*", (req, res, next) => {
 	next();
@@ -52,7 +57,6 @@ router.post("/", newUserValidation, async (req, res) => {
 		const { password } = req.body;
 
 		const hashPass = await hashPassword(password);
-		console.log(hashPass);
 
 		const newUser = {
 			...req.body,
@@ -60,8 +64,6 @@ router.post("/", newUserValidation, async (req, res) => {
 		};
 
 		const result = await createUser(newUser);
-
-		console.log(result);
 		if (result?._id) {
 			return res.json({ status: "success", message: "login success", result });
 		}
@@ -75,6 +77,30 @@ router.post("/", newUserValidation, async (req, res) => {
 		}
 
 		throw new Error(error.message);
+	}
+});
+
+router.post("/logout", async (req, res) => {
+	try {
+		const { _id } = req.body;
+		// const {accessJWT, refreshJWT} = req.body
+
+		//delete accessJWT from session database
+		deleteAccessJwtByUserId(_id);
+
+		//delete refreshJWT form user table.
+		deleteRefreshJwtByUserId(_id);
+
+		res.send({
+			status: "success",
+			message: "You are logged out now!",
+		});
+	} catch (error) {
+		console.log(error);
+		res.send({
+			status: "error",
+			message: "OOp! something we wrong. couldn't complete the process",
+		});
 	}
 });
 

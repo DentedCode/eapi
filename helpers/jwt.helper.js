@@ -43,7 +43,7 @@ export const createRefreshJWT = (email, _id) => {
 export const verifyAccessJwt = accessJWT => {
 	try {
 		const decoded = jwt.verify(accessJWT, process.env.JWT_ACCESS_SECRET);
-		console.log(decoded);
+
 		return Promise.resolve(decoded);
 	} catch (error) {
 		console.log(error.message);

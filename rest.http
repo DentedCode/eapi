@@ -11,6 +11,9 @@ Content-Type: application/json
   "password": "123456"
 }
 
+
+
+
 ###user routers
 ### get user by id
 GET  http://localhost:8000/api/v1/user
@@ -30,6 +33,11 @@ Content-Type: application/json
 }
 
 
+### logout api endpoing
+POST http://localhost:8000/api/v1/user/logout
+Content-Type: application/json
+
+{"_id": "6084f1fea2d7e03e8465907e" }
 
 
 ### Categor Zone ####
