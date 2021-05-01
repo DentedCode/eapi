@@ -17,8 +17,7 @@ Content-Type: application/json
 ###user routers
 ### get user by id
 GET  http://localhost:8000/api/v1/user
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJAYy5jb20iLCJpYXQiOjE2MTkzMzEzOTgsImV4cCI6MTYxOTMzMjI5OH0.WNtMXrl47zNzzEZndRV7mAbQJ785SKKQpWnPVirBc0A
-
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJAYy5jb20iLCJpYXQiOjE2MTk4Mzk5OTksImV4cCI6MTYxOTg0MDg5OX0.jO4-IgTk7gVsabnEsX2H9dI5O9vlo_b1CnScPGusDMo
 
 ### Create a user
 POST http://localhost:8000/api/v1/user
@@ -41,7 +40,7 @@ Content-Type: application/json
 
 
 ### Categor Zone ####
-### Fetch all category
+### F\
 GET  http://localhost:8000/api/v1/category
  
 

@@ -9,8 +9,11 @@ import {
 	createUser,
 	getUserById,
 	deleteRefreshJwtByUserId,
+	getUserByEmail,
 } from "../models/user/User.model.js";
 import { deleteAccessJwtByUserId } from "../models/session/Session.model.js";
+import { storeNewPin } from "../models/reset_pin/ResetPin.model.js";
+import { getRandOTP } from "../helpers/otp.helper.js";
 
 router.all("*", (req, res, next) => {
 	next();
@@ -100,6 +103,47 @@ router.post("/logout", async (req, res) => {
 		res.send({
 			status: "error",
 			message: "OOp! something we wrong. couldn't complete the process",
+		});
+	}
+});
+
+router.post("/otp", async (req, res) => {
+	try {
+		const { email } = req.body;
+
+		//get user base on the email
+		const adminUser = await getUserByEmail(email);
+
+		////lots of work to be done
+		if (adminUser._id) {
+			//1. create OTP
+			const otpLength = 6;
+			const otp = await getRandOTP(otpLength);
+			//store otp in db
+			const newOtp = {
+				otp,
+				email,
+			};
+
+			const result = await storeNewPin(newOtp);
+
+			if (result._id) {
+				console.log("email this datat to user", result);
+				//2. email OTP to the admin
+			}
+		}
+
+		res.send({
+			status: "success",
+			message:
+				"If your email is found in our system, we will send you the password rest instruction. IT may take upto 5min to arrive the email. Please check your junk/spam folder if you don't see email in  your inbox.",
+		});
+	} catch (error) {
+		console.log(error);
+		res.send({
+			status: "error",
+			message:
+				"Error! There is some problem in our system, please try again later.",
 		});
 	}
 });
