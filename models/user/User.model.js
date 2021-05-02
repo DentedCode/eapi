@@ -86,3 +86,23 @@ export const getUserByEmailAndRefreshJWT = ({ email, refreshJWT }) => {
 		}
 	});
 };
+
+export const updateNewPassword = ({ email, hashPass }) => {
+	return new Promise((resolve, reject) => {
+		try {
+			UsersSchema.findOneAndUpdate(
+				{ email },
+				{
+					$set: { password: hashPass },
+				},
+				{
+					new: true,
+				}
+			)
+				.then(data => resolve(data))
+				.catch(error => reject(error));
+		} catch (error) {
+			reject(error);
+		}
+	});
+};

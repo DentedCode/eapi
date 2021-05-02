@@ -32,8 +32,8 @@ const send = async mailInfo => {
 	}
 };
 
-export const emailProcessor = ({ type, otp, email }) => {
-	console.log("from email processer", type, otp, email);
+export const emailProcessor = ({ type, ...data }) => {
+	console.log("from email processer", type, data);
 	let info = {
 		from: `ABC Shop <${process.env.EMAIL_USER}>`, // sender address
 		to: "bar@example.com, baz@example.com", // list of receivers
@@ -45,14 +45,14 @@ export const emailProcessor = ({ type, otp, email }) => {
 	switch (type) {
 		case "OTP_REQUEST":
 			info = {
-				to: email,
+				to: data.email,
 				subject: "OTP for your password rest request",
-				text: `Hi, here is the OTP for your password reset, ${otp} this token will expire in 1 day `,
+				text: `Hi, here is the OTP for your password reset, ${data.otp} this token will expire in 1 day `,
 				html: `
         <div>
         <p>Hello there,</p>
         <p>here is the OTP for your password reset </p>
-        <p style="background: ;background: red;display: inline;padding: 10px;color: wheat;font-weight: 900;">${otp}</p>
+        <p style="background: ;background: red;display: inline;padding: 10px;color: wheat;font-weight: 900;">${data.otp}</p>
         <p>regards,</p>
       </div>
         `,
@@ -61,7 +61,19 @@ export const emailProcessor = ({ type, otp, email }) => {
 			break;
 
 		case "UPDATE_PASS_SUCCESS":
-			info = {};
+			info = {
+				to: data.email,
+				subject: "Password update notification",
+				text: `Hi,  this is to notify that you password at ABC Shop has been changed just now.  IF you do not recognize this activity, please contact us ASAP `,
+				html: `
+        <div>
+        <p>Hello there,</p>
+        <p>this is to notify that you password at ABC Shop has been changed just now. </p>
+
+				<p>IF you do not recognize this activity, please contact us ASAP</p>
+        <p>regards,</p>
+      </div>`,
+			};
 			send(info);
 			break;
 

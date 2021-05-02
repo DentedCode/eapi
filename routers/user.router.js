@@ -4,15 +4,23 @@ const router = express.Router();
 import { hashPassword } from "../helpers/bcrypt.helper.js";
 import { verifyAccessJwt } from "../helpers/jwt.helper.js";
 import { userAuthorization } from "../middlewares/authorization.middleware.js";
-import { newUserValidation } from "../middlewares/formValidation.middleware.js";
+import {
+	newUserValidation,
+	updatePasswordValidation,
+} from "../middlewares/formValidation.middleware.js";
 import {
 	createUser,
 	getUserById,
 	deleteRefreshJwtByUserId,
 	getUserByEmail,
+	updateNewPassword,
 } from "../models/user/User.model.js";
 import { deleteAccessJwtByUserId } from "../models/session/Session.model.js";
-import { storeNewPin } from "../models/reset_pin/ResetPin.model.js";
+import {
+	findPin,
+	storeNewPin,
+	deletePasswordResetPin,
+} from "../models/reset_pin/ResetPin.model.js";
 import { getRandOTP } from "../helpers/otp.helper.js";
 import { emailProcessor } from "../helpers/email.helper.js";
 
@@ -146,6 +154,58 @@ router.post("/otp", async (req, res) => {
 			status: "success",
 			message:
 				"If your email is found in our system, we will send you the password rest instruction. IT may take upto 5min to arrive the email. Please check your junk/spam folder if you don't see email in  your inbox.",
+		});
+	} catch (error) {
+		console.log(error);
+		res.send({
+			status: "error",
+			message:
+				"Error! There is some problem in our system, please try again later.",
+		});
+	}
+});
+
+router.post("/password", updatePasswordValidation, async (req, res) => {
+	try {
+		const { otp, password, email } = req.body;
+		//////process
+		//1. is otp valid
+		const pinInfo = await findPin({ otp, email });
+		console.log(pinInfo);
+		if (pinInfo?._id) {
+			//2. encrypt password
+			const hashPass = await hashPassword(password);
+
+			//3. update password in db
+			if (hashPass) {
+				const result = await updateNewPassword({
+					email: pinInfo.email,
+					hashPass,
+				});
+
+				//delete the reset pin
+				deletePasswordResetPin(pinInfo._id);
+
+				if (result._id) {
+					//3. send email notification
+					const emailObj = {
+						type: "UPDATE_PASS_SUCCESS",
+						email,
+					};
+
+					emailProcessor(emailObj);
+
+					return res.send({
+						status: "success",
+						message: "Your password has been updated. You may login now!",
+					});
+				}
+			}
+		}
+		res.send({
+			status: "error",
+			message:
+				"Error! There is some problem in our system, please try again later.",
 		});
 	} catch (error) {
 		console.log(error);
