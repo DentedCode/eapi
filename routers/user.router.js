@@ -14,6 +14,7 @@ import {
 import { deleteAccessJwtByUserId } from "../models/session/Session.model.js";
 import { storeNewPin } from "../models/reset_pin/ResetPin.model.js";
 import { getRandOTP } from "../helpers/otp.helper.js";
+import { emailProcessor } from "../helpers/email.helper.js";
 
 router.all("*", (req, res, next) => {
 	next();
@@ -115,7 +116,7 @@ router.post("/otp", async (req, res) => {
 		const adminUser = await getUserByEmail(email);
 
 		////lots of work to be done
-		if (adminUser._id) {
+		if (adminUser?._id) {
 			//1. create OTP
 			const otpLength = 6;
 			const otp = await getRandOTP(otpLength);
@@ -127,9 +128,17 @@ router.post("/otp", async (req, res) => {
 
 			const result = await storeNewPin(newOtp);
 
-			if (result._id) {
-				console.log("email this datat to user", result);
+			if (result?._id) {
 				//2. email OTP to the admin
+
+				const { otp, email } = result;
+				console.log(otp, email);
+				const mailInfo = {
+					type: "OTP_REQUEST",
+					otp,
+					email,
+				};
+				emailProcessor(mailInfo);
 			}
 		}
 
