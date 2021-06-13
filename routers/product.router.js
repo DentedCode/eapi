@@ -2,6 +2,8 @@ import express from "express";
 const router = express.Router();
 import slugify from "slugify";
 import multer from "multer";
+import AWS from "aws-sdk";
+import multerS3 from "multer-s3";
 
 import {
 	newProductValidation,
@@ -47,7 +49,31 @@ var storage = multer.diskStorage({
 	},
 });
 
-var upload = multer({ storage: storage });
+//to s3 storage
+const bucketName = process.env.AWS_BUCKET_NAME;
+const region = process.env.AWS_BUCKET_REGION;
+const accessKeyId = process.env.AWS_ACCESS_KEY;
+const secretAccessKey = process.env.AWS_SECRET_KEY;
+
+const s3 = new AWS.S3({
+	region,
+	accessKeyId,
+	secretAccessKey,
+});
+
+const s3Storage = multerS3({
+	s3: s3,
+	bucket: bucketName,
+	metadata: function (req, file, cb) {
+		cb(null, { fieldName: file.fieldname });
+	},
+	key: function (req, file, cb) {
+		cb(null, Date.now().toString());
+	},
+});
+
+// var upload = multer({ storage: storage });
+var upload = multer({ storage: s3Storage });
 
 // End Multer configuration
 
@@ -83,15 +109,15 @@ router.post(
 
 			const basePath = `${req.protocol}://${req.get("host")}/img/product/`;
 			const files = req.files;
-			console.log(files);
+			console.log("it's from here", files);
 
-			const images = [];
+			const images = files.length ? files.map(row => row.location) : [];
 
-			files.map(file => {
-				const imgFullPath = basePath + file.filename;
+			// files.map(file => {
+			// 	const imgFullPath = basePath + file.filename;
 
-				images.push(imgFullPath);
-			});
+			// 	images.push(imgFullPath);
+			// });
 
 			const result = await insertProduct({
 				...addNewProd,
