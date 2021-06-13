@@ -2,7 +2,7 @@
 
 This is the admin panel of e-commerce site.
 
-## How to use
+## How to use 
 
 - Clone the project `git clone ...`
 - `cd eapi`
