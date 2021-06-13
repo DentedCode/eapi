@@ -86,6 +86,10 @@ app.use("/api/v1/product", userAuthorization, productRouter);
 app.use("/api/v1/token", tokenRouter);
 app.use("/api/v1/payment", paymentRouter);
 
+//test success
+app.use("/", (req, res) => {
+	res.send("server, Ok");
+});
 //404 return
 
 app.use((req, res, next) => {
@@ -97,6 +101,7 @@ app.use((req, res, next) => {
 
 //handle error
 import { handleError } from "./utils/errorHandler.js";
+
 app.use((error, req, res, next) => {
 	handleError(error, res);
 });

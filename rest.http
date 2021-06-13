@@ -3,11 +3,12 @@
 GET  http://localhost:8000
 
 ### Login api endpoing
-POST  http://localhost:8000/api/v1/login
+# POST  http://localhost:8000/api/v1/login
+POST  http://admincmsapi-env.eba-y4wvkyfg.ap-southeast-2.elasticbeanstalk.com/api/v1/login
 Content-Type: application/json
 
 {
-  "email": "b@c.com",
+  "email": "q@q.com",
   "password": "123456"
 }
 
