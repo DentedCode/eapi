@@ -27,22 +27,64 @@ mongoClient();
 //Auth middleware
 import { userAuthorization } from "./middlewares/authorization.middleware.js";
 
+// justpayment
+import { v4 as uuidv4 } from "uuid";
+import Stripe from "stripe";
+const stripe = new Stripe("sk_test_XdKQAGDK5VxW7fkoAJRyl2r800QzPUYo03");
+
+app.post("/payment", (req, res) => {
+	const { product, token } = req.body;
+	clg(product, token);
+
+	const idempotencyKey = uuidv4();
+
+	return stripe.customers
+		.create({
+			email: token.email,
+			source: token.id,
+		})
+		.then(customer => {
+			console.log("order success", customer);
+			// have access to the customer object
+			stripe.charges
+				.create(
+					{
+						customer: customer.id, // set the customer id
+						amount: token.amount, // 25
+						currency: "aud",
+						description: "One-time setup fee",
+						receipt_email: token.email,
+					},
+					{ idempotencyKey }
+				)
+				.then(result => {
+					res.send({
+						status: "success",
+						message: result,
+					});
+				})
+				.catch(err => {
+					console.log(err);
+					res.send({ status: "error", message: error });
+				});
+		});
+});
+
 // LOAD ROUTERS
 import loginRouter from "./routers/login.router.js";
 import userRouter from "./routers/user.router.js";
 import categoryRouter from "./routers/category.router.js";
 import productRouter from "./routers/product.router.js";
 import tokenRouter from "./routers/token.router.js";
+import paymentRouter from "./routers/payment.router.js";
+
 //USE APIS
 app.use("/api/v1/login", loginRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/category", userAuthorization, categoryRouter);
 app.use("/api/v1/product", userAuthorization, productRouter);
 app.use("/api/v1/token", tokenRouter);
-
-app.get("/", (req, res) => {
-	res.send("Hello World");
-});
+app.use("/api/v1/payment", paymentRouter);
 
 //404 return
 

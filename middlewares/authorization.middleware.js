@@ -12,7 +12,16 @@ const getUserSession = accessJWT => {
 export const userAuthorization = async (req, res, next) => {
 	try {
 		const { authorization } = req.headers;
+
+		console.log(authorization, "from verify token");
 		const verifyToken = await verifyAccessJwt(authorization);
+
+		if (verifyToken === "jwt expired") {
+			return res.status(200).json({
+				status: "error",
+				message: "jwt expired",
+			});
+		}
 
 		if (!verifyToken?.email) {
 			return res.status(403).json({
@@ -24,7 +33,7 @@ export const userAuthorization = async (req, res, next) => {
 		//check if token is exist in database
 		const info = await getUserSession(authorization);
 
-		if (info.userId) {
+		if (info?.userId) {
 			req.body._id = info.userId;
 			// check and make sure the role is admin
 			//let's get the user form DB

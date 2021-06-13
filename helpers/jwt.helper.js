@@ -46,8 +46,11 @@ export const verifyAccessJwt = accessJWT => {
 
 		return Promise.resolve(decoded);
 	} catch (error) {
-		console.log(error.message);
-		return Promise.resolve(false);
+		if (error.message === "jwt expired") {
+			return Promise.resolve("jwt expired");
+		} else {
+			return Promise.reject(error);
+		}
 	}
 };
 

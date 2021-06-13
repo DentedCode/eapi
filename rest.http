@@ -1,5 +1,5 @@
 
-### root access
+###root access
 GET  http://localhost:8000
 
 ### Login api endpoing
@@ -26,7 +26,7 @@ Content-Type: application/json
 {
   "fName": "sfjsd",
   "lName": "sfdkl",
-  "email": "b@c.com",
+  "email": "q@q.com",
   "password": "123456",
   "role": "user"
 }
@@ -85,3 +85,7 @@ GET   http://localhost:8000/api/v1/product/607a850e263dc01ac00d540c
 # Request fresh accessJWt
 GET  http://localhost:8000/api/v1/token
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJAYy5jb20iLCJpYXQiOjE2MTk0ODI3NDAsImV4cCI6MTYyMjA3NDc0MH0.Ug2GZHZXlcP1zxjUcCA_Hkea047-Yzb1R_bCKnacABY
+
+
+### Payment
+POST  http://localhost:8000//api/v1/payment
