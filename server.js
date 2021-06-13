@@ -11,6 +11,7 @@ import morgan from "morgan";
 const PORT = process.env.PORT || 8000;
 
 app.use(cors());
+app.options("*", cors());
 app.use(morgan("tiny"));
 
 const __dirname = path.resolve();
